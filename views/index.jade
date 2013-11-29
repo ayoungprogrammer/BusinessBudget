@@ -1,0 +1,70 @@
+extends layout
+
+block head
+
+  link(rel='stylesheet', href='/js/vendor/bootstrap-css/css/bootstrap.css')
+  link(rel='stylesheet', href='/js/vendor/angular.treeview/css/angular.treeview.css')
+  
+  script(type='text/javascript', src='/js/vendor/angular/angular.js')
+  script(type='text/javascript', src='/js/vendor/angular.treeview/angular.treeview.js')
+    
+  script(type='text/javascript', src='/js/controllers/app.js')
+  script(type='text/javascript', src='/js/controllers/controller.js')
+  script(type='text/javascript', src='/js/controllers/directives.js')
+
+block content
+  h1 Budget
+  div(ng-controller='ItemController')
+    div
+      .divbar(style="float:top")
+        .divh
+          form(ng-submit='addItem(tree.currentNode)')
+            input(type="text" ng-model="search" class="search-query" placeholder="Search")
+            span(style="display:inline-block; width: 10px")
+            input(class='btn-primary' type='submit' value='+')
+      .divbar(style="float:bottom;width:auto", data-angular-treeview='true',
+        data-tree-id='tree',
+        data-tree-model='items',
+        data-tree-search = 'search',
+        data-node-id='id',
+        data-node-label='name',
+        data-node-children='children')
+    table
+      tr
+        th
+        th 
+          p(align='left', margin='2px') Name
+        th 
+          p(align='left', margin='2px') Description
+        th 
+          p(align='right', margin='2px') Cost
+        th 
+          p(align='right', margin='2px') Quantity 
+        th
+          p(align='right') Total
+      tr(ng-repeat='item in basket')
+        td
+          div
+            form(ng-submit='removeItem(item)')
+              input(class='btn-primary' type='submit' value='-')
+        td
+          {{item.name}}
+        td
+          {{item.desc}}
+        td
+          {{item.cost.formatMoney(2,'.',',')}}
+        td 
+          div
+            input.right(type='text',maxlength='5', number-mask='', ng-model='item.quantity')
+        td.right
+          {{(item.cost*item.quantity).formatMoney(2,'.',',')}}
+      tr
+        td
+        td 
+        td 
+        td 
+        td 
+        td.right
+          div {{total()}}
+  
+  
