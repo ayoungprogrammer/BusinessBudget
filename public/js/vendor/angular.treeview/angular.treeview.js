@@ -71,8 +71,6 @@
                                                 //create tree object if not exists
                                                 scope[treeId] = scope[treeId] || {};
                                                 
-                                                scope[treeId].currentNode = scope[attrs.treeModel][0];
-                                                scope[treeId].currentNode.selected = 'selected';
 
                                                 //if node head clicks,
                                                 scope[treeId].selectNodeHead = scope[treeId].selectNodeHead || function( selectedNode ){

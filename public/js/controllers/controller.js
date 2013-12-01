@@ -1,4 +1,4 @@
-
+var app = angular.module('app.controllers',[]);
 
 Number.prototype.formatMoney = function(c, d, t){
 var n = this, 
@@ -22,7 +22,7 @@ var n = this,
 	 
  }
 
-function AdminController($scope,$http){
+app.controller('AdminController', function ($scope,$http){
 	
 	const CREATE_MODE = 1;
 	const EDIT_MODE = 2;
@@ -119,9 +119,11 @@ function AdminController($scope,$http){
 	
 	$scope.update();
 	
-}
+});
 
-function ItemController($scope,$http){
+app.controller('ItemController',function IndexController($scope,$http){
+	
+	console.log('wtf');
 	
 	$scope.items = [];
 	$scope.basket = [];
@@ -157,4 +159,29 @@ function ItemController($scope,$http){
 	};
 	
 	
-};
+});
+
+
+
+
+app.controller('LoginController', function($scope,$http,$location){
+	
+	$scope.username = '';
+	$scope.password = '';
+	
+	$scope.login = function(){
+		var cred = {'username':$scope.username,'password':$scope.password};
+		$http.post('/login',cred).success(function(data){
+			console.log(data);
+			if(data=='true'){
+				$location.path('/admin');
+			}else{
+				$location.path('/invalid');
+			}
+		});
+	};
+});
+
+app.controller('InvalidController', function($scope,$http,$location){
+	
+});

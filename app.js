@@ -9,6 +9,7 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var api = require('./api');
+var auth = require ('./auth');
 
 var db = mongoose.createConnection('localhost','busbud');
 var app = express();
@@ -18,6 +19,10 @@ var app = express();
 var itemSchema = require('./models/item.js').ItemSchema;
 var item = db.model('items',itemSchema);
 
+
+
+
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
@@ -26,8 +31,13 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(app.router);
+
+app.use( express.cookieParser() );
+app.use(express.session({secret: "what does this do"}));
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(app.router);
+
 
 // development only
 if ('development' == app.get('env')) {
@@ -35,15 +45,30 @@ if ('development' == app.get('env')) {
 }
 
 //routes
+
 app.get('/', routes.index);
-app.get('/admin',routes.admin);
+app.get('/view/admin',auth.checkAuth);
+app.get('/view/:name',routes.view);
+//app.get('/login',routes.login);
+//app.get('/admin',auth.checkAuth,routes.admin);
+//app.get('/accessDenied',routes.accessDenied);
+//app.get('/invalid',routes.invalid);
+//app.get('/budget',routes.budget);
+
+//auth
+app.post('/login',auth.login);
 
 //api
+app.put('/api/*',auth.checkAuth);
+app.post('/api/*',auth.checkAuth);
+app.delete('/api/*',auth.checkAuth);
+
 app.get('/api/items',api.items);
 app.put('/api/items',api.updateItem);
 app.post('/api/items',api.createItem)
 app.delete('/api/items/:id',api.deleteItem);
 
+app.get('*',routes.index);
 
 //Error routes
 app.use(routes.notFound);

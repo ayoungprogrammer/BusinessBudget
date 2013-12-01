@@ -2,10 +2,7 @@ var mongoose = require('mongoose');
 
 var db = require('./dummydb.js');
 
-//DB interface
-function deleteItem(id){
-	return db.deleteItem(db.getItems(),id.split('.'));
-}
+
 
 
 //Exports
