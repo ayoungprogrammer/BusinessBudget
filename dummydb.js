@@ -1,4 +1,8 @@
-var data = {"items" : 	[{'name' : 'Transport',
+var data = {
+		'name' : 'root',
+		'id' : '',
+		'folder' : true,
+		'children' : 	[{'name' : 'Transport',
 							'id': 'transport',
 							'folder': true,
 							'children':[{'name': 'Truck',
@@ -26,12 +30,18 @@ exports.setData=function(tData){
 };
 
 exports.getItems = function(){
-	return data.items;
+	return data;
 };
 
 exports.getItem = function(id){
-	
-	return getItem(data.items,id.split('.'));
+	if(id==''){
+		return data;
+	}
+	return getItem(data.children,id.split('.'));
+};
+
+exports.deleteItem = function(id){
+	return deleteItem(data.children,id.split('.'));
 };
 
 exports.updateItem = function(item){
@@ -51,7 +61,7 @@ exports.updateItem = function(item){
 		}
 	}
 	
-	return updateItem(data.items,item,item.id.split('.'));
+	return updateItem(data.children,item,item.id.split('.'));
 };
 
 exports.createItem=function(item){
@@ -72,22 +82,15 @@ exports.createItem=function(item){
 		}
 	}
 	
-	return insertItem(data.items,item,item.id.split('.'));
+	return insertItem(data.children,item,item.id.split('.'));
 };
 
-exports.deleteItem = function(id){
-	return deleteItem(data.items,id.split('.'));
-};
+
 
 function getItem(data,tokens){
 	if(!data){
 		console.log("GET: ERROR INVALID ID(1)");
 		return undefined;
-	}
-	
-	
-	if(tokens.length==0){
-		return data;
 	}
 	
 	for(var i = 0;i<data.length;i++){

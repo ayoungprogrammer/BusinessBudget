@@ -29,17 +29,17 @@ app.controller('AdminController', function ($scope,$http){
 	
 	$scope.selectID = '';
 	
-	$scope.items = [{'id':'','name':'root','folder':true}];
-	var root = $scope.items[0];
+	
+	$scope.items = [];
 	//$scope.$scope[tree].currentNode = root;
-	$scope.search = '';
+	$scope.search = {};
 	$scope.name = '';
 	$scope.folder = false;
 	$scope.mode = 0;
 	
 	$scope.update = function(){
 		$http.get('/api/items').success(function (data){
-			root.children = data.items;
+			$scope.items = [data];
 			$scope.items.forEach(function(item,i){
 				console.log(item);
 			});
@@ -106,6 +106,7 @@ app.controller('AdminController', function ($scope,$http){
 				$scope.cost = undefined;
 				$scope.desc = undefined;
 				$scope.mode = CREATE_MODE;
+				
 			}
 		}
 	};
@@ -123,17 +124,17 @@ app.controller('AdminController', function ($scope,$http){
 
 app.controller('ItemController',function IndexController($scope,$http){
 	
-	console.log('wtf');
+
 	
 	$scope.items = [];
 	$scope.basket = [];
-	$scope.search = '';
+	$scope.search = {};
 	
-	$scope.items = [{'id':'','name':'root','folder':true}];
-	var root = $scope.items[0];
+	
 	
 	$http.get('/api/items').success(function (data){
-		root.children = data.items;
+		console.log('data: '+data);
+		$scope.items =[data];
 	});
 	
 	$scope.total = function(){

@@ -7,17 +7,16 @@ var express = require('express');
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
-var mongoose = require('mongoose');
+
 var api = require('./api');
 var auth = require ('./auth');
 
-var db = mongoose.createConnection('localhost','busbud');
+
 var app = express();
 
 
 
-var itemSchema = require('./models/item.js').ItemSchema;
-var item = db.model('items',itemSchema);
+
 
 
 
