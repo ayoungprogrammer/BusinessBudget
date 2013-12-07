@@ -46,3 +46,18 @@ exports.items = function(req,res){
 	
 };
 
+exports.saveBudget = function(req,res){
+	db.saveBudget(req.body,function(err,uid){
+		console.log('Saved budget '+uid+':');
+		//res.set('id',uid);
+		res.send({'id':uid});
+	});
+};
+
+exports.getBudget = function(req,res){
+	db.getBudget(req.params.id,function(err,budget){
+		console.log('Get budget'+req.params.id+': ');
+		res.send({'basket':budget});
+	});
+};
+

@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var async = require('async');
 var db;
 var itemModel;
+var budgetModel;
 
 
 exports.clear = function(callback){
@@ -42,6 +43,9 @@ exports.init = function(loc,cb){
 		console.log('Started connection to '+loc);
 		var itemSchema = require('./models/item.js').ItemSchema;
 		itemModel = db.model('items',itemSchema);
+		
+		var budgetSchema = require('./models/budget.js').BudgetSchema;
+		budgetModel = db.model('budget',budgetSchema);
 	
 		exports.exportDB(function(err,res){
 			if(res.length==0){
@@ -136,6 +140,17 @@ exports.exportDB = function(cb){
 			 console.log('EXPORT DB: ERROR EXPORTING: '+err);
 		  };
 		});
+};
+
+exports.exportBudgets = function(cb){
+	budgetModel.find({}).exec(function(err, result) {
+		  if (!err) {
+			    cb(err,result);
+			  } else {
+			    // error handling
+				 console.log('EXPORT DB: ERROR EXPORTING: '+err);
+			  };
+			});
 };
 
 exports.getItem = function(id,cb){
@@ -305,6 +320,36 @@ function insertItem(item,cb){
 			cb(false);
 		}else {
 			cb('ERROR SAVING');
+		}
+	});
+};
+
+exports.saveBudget = function(budget,cb){
+	async.waterfall(
+			[function(cb){
+				var budgetObj = new budgetModel();
+				budgetObj.info = JSON.stringify(budget);
+				budgetObj.save(function(err){
+					cb(err,budgetObj._id);
+				});
+			}],
+			function(err,res){
+				cb(err,res);
+				
+			}
+				
+	);
+};
+
+exports.getBudget = function(id,cb){
+	budgetModel.findById(id,function(err,prod){
+		if(err){
+			cb(err);
+		}else{
+			if(prod&&prod.info){
+				cb(err,JSON.parse(prod.info));
+			}
+			else cb(err);
 		}
 	});
 };

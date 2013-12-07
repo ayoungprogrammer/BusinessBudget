@@ -11,9 +11,25 @@ var n = this,
    return '$'+s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
  };
  
+ function filterItems(search,items){
+		if(!items.folder){
+		
+			if(items.name.toLowerCase().indexOf(search)>=0){
+				return [items];
+			}
+			else return [];
+		}else {
+			var ret = [];
+			for(var i=0;i<items.children.length;i++){
+				var arr = filterItems(search,items.children[i]);
+				ret = ret.concat(arr);
+			}
+			return ret;
+		}
+	}
+ 
  function Item(item){
 	 
-	 this.price = item;
 	 this.id = item.id;
 	 this.name = item.name;
 	 this.cost = item.cost;
@@ -29,10 +45,10 @@ app.controller('AdminController', function ($scope,$http){
 	
 	$scope.selectID = '';
 	
-	
+	$scope.list = [];
 	$scope.items = [];
 	//$scope.$scope[tree].currentNode = root;
-	$scope.search = {};
+	$scope.search = '';
 	$scope.name = '';
 	$scope.folder = false;
 	$scope.mode = 0;
@@ -46,6 +62,14 @@ app.controller('AdminController', function ($scope,$http){
 		});
 	};
 	
+	
+	$scope.$watch('[search,items]',function(){
+		if($scope.search==''){
+			$scope.list = $scope.items;
+		}else {
+			$scope.list = filterItems($scope.search.toLowerCase(),$scope.items[0]);
+		}
+	},true);
 	
 	
 	$scope.submit = function(){
@@ -122,13 +146,31 @@ app.controller('AdminController', function ($scope,$http){
 	
 });
 
-app.controller('ItemController',function IndexController($scope,$http){
-	
-
+app.controller('ItemController',function IndexController($scope,$http,$routeParams,$location){
 	
 	$scope.items = [];
 	$scope.basket = [];
-	$scope.search = {};
+	$scope.list = [];
+	$scope.search = '';
+	
+	if($routeParams.id){
+		$http.get('/api/budget/'+$routeParams.id).success(function(data){
+			//console.log(data.basket.length);
+			if(data&&data.basket){
+				$scope.basket = data.basket;
+			}else {
+				$location.url('/');
+			}
+		});
+	}
+	
+	$scope.$watch('[items,search]',function(){
+		if($scope.search==''){
+			$scope.list = $scope.items;
+		}else {
+			$scope.list = filterItems($scope.search.toLowerCase(),$scope.items[0]);
+		}
+	},true);
 	
 	
 	
@@ -159,6 +201,14 @@ app.controller('ItemController',function IndexController($scope,$http){
 		}
 	};
 	
+	$scope.saveBudget = function(){
+		//var data = {data:$scope.basket};
+		//console.log(JSON.stringify(data));
+		$http.post('/api/budget',$scope.basket).success(function(key){
+			console.log(key);
+			$location.url('/budget/'+key.id);
+		});
+	};
 	
 });
 

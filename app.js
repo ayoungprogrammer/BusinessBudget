@@ -58,6 +58,9 @@ app.get('/view/:name',routes.view);
 app.post('/login',auth.login);
 
 //api
+app.post('/api/budget',api.saveBudget);
+app.get('/api/budget/:id',api.getBudget);
+
 app.put('/api/*',auth.checkAuth);
 app.post('/api/*',auth.checkAuth);
 app.delete('/api/*',auth.checkAuth);
@@ -66,6 +69,9 @@ app.get('/api/items',api.items);
 app.put('/api/items',api.updateItem);
 app.post('/api/items',api.createItem)
 app.delete('/api/items/:id',api.deleteItem);
+
+
+
 
 app.get('*',routes.index);
 

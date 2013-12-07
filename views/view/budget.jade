@@ -3,12 +3,12 @@ div
       .divbar(style="float:top")
         .divh
           form(ng-submit='addItem(tree.currentNode)')
-            input(type="text" ng-model="search.name" class="search-query" placeholder="Search")
+            input(type="text" ng-model="search" class="search-query" placeholder="Search")
             span(style="display:inline-block; width: 10px")
             input(class='btn-primary' type='submit' value='+')
       .divbar(style="float:bottom;width:auto", data-angular-treeview='true',
         data-tree-id='tree',
-        data-tree-model='items',
+        data-tree-model='list',
         data-tree-search = 'search',
         data-node-id='id',
         data-node-label='name',
@@ -50,3 +50,12 @@ div
         td 
         td.right
           div {{total()}}
+      tr
+        td
+        td
+        td
+        td
+        td
+        td.right
+          form(ng-submit='saveBudget()')
+            input(class='btn-primary' type='submit' value='Save')  

@@ -6,10 +6,10 @@ div
     div(class='sidebar')
       .divh
           form(ng-submit='addItem(tree.currentNode)')
-            input(type="text" ng-model="search.name" class="search-query" placeholder="Search")
+            input(type="text" ng-model="search" class="search-query" placeholder="Search")
       .divbar(style="float:bottom;width:auto", data-angular-treeview='true',
         data-tree-id='tree',
-        data-tree-model='items',
+        data-tree-model='list',
         data-tree-search = 'search',
         data-node-id='id',
         data-node-label='name',

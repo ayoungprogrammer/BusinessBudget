@@ -10,7 +10,7 @@ app.config(['$routeProvider','$locationProvider',
 		templateUrl: 'view/budget',
 		controller: 'ItemController'
 	}).
-	when('/budget',{
+	when('/budget/:id',{
 		templateUrl: 'view/budget',
 		controller: 'ItemController'
 	}).

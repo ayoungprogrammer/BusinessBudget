@@ -14,7 +14,7 @@ db.init('mongodb://localhost/app',function(){
 				db.updateItem(root,cb);
 			},
 			function(cb){
-				db.exportDB(function(err,res){
+				db.exportBudgets(function(err,res){
 					console.log('res: '+res);
 					cb(err);
 				});
