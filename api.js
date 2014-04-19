@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var db = require('./mongod.js');
 //var db = require('./dummydb.js');
 
-db.init('mongodb://localhost/app',function(){});
+db.init('mongodb://root:password123@oceanic.mongohq.com:10054/app20135974',function(){});
 
 //Exports
 exports.createItem = function (req,res){

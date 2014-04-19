@@ -67,7 +67,7 @@ app.delete('/api/*',auth.checkAuth);
 
 app.get('/api/items',api.items);
 app.put('/api/items',api.updateItem);
-app.post('/api/items',api.createItem)
+app.post('/api/items',api.createItem);
 app.delete('/api/items/:id',api.deleteItem);
 
 
