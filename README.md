@@ -1,17 +1,17 @@
 # BusinessBudget
 
-## Objective
-
-
+http://bbudget.herokuapp.com
 
 ## Usage
 
-
+Provide a simple budget tool for startups
 
 ## Developing
 
 npm install bower -g
+
 bower install bootstrap-css#2.3.2
+
 bower install angular#1.2.3
 
 ### Tools
